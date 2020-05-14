@@ -14,6 +14,8 @@
 #include "FloatCoord.h"
 #include <json/json.h>
 #include <vector>
+#include <iostream>
+
 using namespace std;
 
 class Excluder

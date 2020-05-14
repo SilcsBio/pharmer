@@ -44,7 +44,7 @@
 #include "queryparsers.h"
 #include "Timer.h"
 #include "MolFilter.h"
-#include "PharmerServer.h"
+//#include "PharmerServer.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "ReadMCMol.h"
@@ -103,8 +103,8 @@ cl::opt<bool> SortRMSD("sort-rmsd", cl::desc("Sort results by RMSD."),
 cl::opt<bool> FilePartition("file-partition",
 		cl::desc("Partion database slices based on files"), cl::init(false));
 
-cl::opt<string> MinServer("min-server",cl::desc("minimization server address"));
-cl::opt<unsigned> MinPort("min-port",cl::desc("port for minimization server"));
+//cl::opt<string> MinServer("min-server",cl::desc("minimization server address"));
+//cl::opt<unsigned> MinPort("min-port",cl::desc("port for minimization server"));
 
 cl::opt<string> Receptor("receptor",
 		cl::desc("Receptor file for interaction pharmacophroes"));
@@ -286,7 +286,7 @@ static void handle_pharma_cmd(const Pharmas& pharmas)
 struct FilterDBCreate
 {
 	WeightRangeFilter filter;
-	shared_ptr<PharmerDatabaseCreator> db;
+	boost::shared_ptr<PharmerDatabaseCreator> db;
 
 	FilterDBCreate()
 	{
@@ -470,7 +470,7 @@ struct LoadDatabase
 			unsigned w = weights[j];
 			filesystem::path subdir = dbpath
 					/ (string("w" + lexical_cast<string>(w)));
-			shared_ptr<PharmerDatabaseSearcher> db(
+			boost::shared_ptr<PharmerDatabaseSearcher> db(
 					new PharmerDatabaseSearcher(subdir));
 			if (j > 0)
 				databases[i].back().max = w;
@@ -506,7 +506,7 @@ static void loadDatabases(vector<vector<MolWeightDatabase> >& databases,
 		}
 
 		loading_threads.add_thread(
-				new thread(ref(loaders[i]), ref(databases), i, dbpath));
+				new thread(boost::ref(loaders[i]), boost::ref(databases), i, dbpath));
 	}
 	loading_threads.join_all();
 
@@ -686,6 +686,7 @@ int main(int argc, char *argv[])
 	{
 		handle_dbsearch_cmd();
 	}
+/*
 	else if (Cmd == "server")
 	{
 		vector<vector<MolWeightDatabase> > databases;
@@ -708,6 +709,7 @@ int main(int argc, char *argv[])
 		}
 		pharmer_server(Port, databases, LogDir, totalC, totalM, MinServer, MinPort);
 	}
+*/
 	else
 	{
 		cl::PrintHelpMessage();

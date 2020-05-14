@@ -461,7 +461,7 @@ bool PharmerQuery::isExcluded(QueryResult* result)
 
 	MolData mdata;
 	PMolReaderSingleAlloc pread;
-	shared_ptr<PharmerDatabaseSearcher> db;
+	boost::shared_ptr<PharmerDatabaseSearcher> db;
 	unsigned long loc = getLocation(result, db);
 	db->getMolData(loc, mdata, pread);
 
@@ -560,7 +560,7 @@ void PharmerQuery::setExtraInfo(QueryResult& r)
 {
 	if (!r.name[0])
 	{
-		shared_ptr<PharmerDatabaseSearcher> db;
+		boost::shared_ptr<PharmerDatabaseSearcher> db;
 		unsigned long loc = getLocation(&r, db);
 
 		//TODO: make this more efficient (don't need to unpack full mol)
@@ -606,7 +606,7 @@ static bool locationCompare(const QueryResult* lhs, const QueryResult* rhs)
 }
 
 unsigned long PharmerQuery::getLocation(const QueryResult* r,
-		shared_ptr<PharmerDatabaseSearcher>& db)
+		boost::shared_ptr<PharmerDatabaseSearcher>& db)
 {
 	unsigned dbid = r->c->location % maxID();
 	unsigned dbi = 0;
@@ -634,7 +634,7 @@ void PharmerQuery::outputMols(ostream& out)
 	for (unsigned i = 0, n = myres.size(); i < n && out; i++)
 	{
 		access();
-		shared_ptr<PharmerDatabaseSearcher> db;
+		boost::shared_ptr<PharmerDatabaseSearcher> db;
 		unsigned long loc = getLocation(myres[i], db);
 
 		sddata.clear();
@@ -657,7 +657,7 @@ void PharmerQuery::outputMol(const QueryResult* mol, ostream& out,
 
 	sddata.push_back(ASDDataItem("rmsd", lexical_cast<string>(mol->c->val)));
 
-	shared_ptr<PharmerDatabaseSearcher> db;
+	boost::shared_ptr<PharmerDatabaseSearcher> db;
 	unsigned long loc = getLocation(mol, db);
 
 	db->getMolData(loc, mdata, pread);
@@ -809,7 +809,7 @@ void PharmerQuery::thread_sendSmina(PharmerQuery *query, stream_ptr out,
 		{
 			query->access();
 			QueryResult *r = rescopy[i];
-			shared_ptr<PharmerDatabaseSearcher> db;
+			boost::shared_ptr<PharmerDatabaseSearcher> db;
 			unsigned long loc = query->getLocation(r, db);
 
 			//extract and zip rmsd transform
