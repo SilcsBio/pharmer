@@ -1,3 +1,5 @@
+This is a fork of original pharmer code. I added a build script using Docker. 
+
 Use `./build.sh` to build `pharmer` using Docker. The static binary will be placed under `Release/pharmer`.
 
 ---
