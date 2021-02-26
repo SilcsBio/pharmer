@@ -6,20 +6,12 @@ RUN apt-get update && \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y build-essential wget git cmake python gfortran zlib1g zlib1g-dev
-#    apt-get install -y gcc-4.9 g++-4.9 gfortran-4.9 gcc-4.9-base && \
-#    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 100 && \
-#    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 100 && \
-#    update-alternatives --install /usr/bin/gforran gfortran /usr/bin/gfortran-4.9 100 
-
 
 #
 # install various dependencies
 #
 
 WORKDIR /usr/local/src
-
-# add git token
-RUN git config --global url."https://140dfbafd33a8cd092cef85885ad787d72e7ccf5:@github.com/".insteadOf "https://github.com/"
 
 # cmake
 RUN wget "https://github.com/Kitware/CMake/releases/download/v3.17.2/cmake-3.17.2.tar.gz" && \
@@ -36,18 +28,6 @@ RUN wget "https://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_6
     ./b2 -j4 --link=static && \
     ./b2 -j4 install
 RUN rm -f /usr/local/src/boost_1_63_0.tar.gz
-
-# GOSU for docker image permission issue
-RUN apt-get update && apt-get -y --no-install-recommends install \
-    ca-certificates \
-    curl
-
-RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
-RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture).asc" \
-    && gpg --verify /usr/local/bin/gosu.asc \
-    && rm /usr/local/bin/gosu.asc \
-    && chmod +x /usr/local/bin/gosu
 
 # openbabel
 
@@ -76,10 +56,14 @@ RUN wget "https://github.com/gperftools/gperftools/releases/download/gperftools-
 RUN rm -f /usr/local/src/gperftools-2.7.tar.gz
 
 #
-# entrypoint
+# compile pharmer
 #
 
-#COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY . /pharmer
+
+WORKDIR /pharmer/Release
+RUN make clean ; make all
+
 #RUN chmod +x /usr/local/bin/entrypoint.sh
 
 #ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
