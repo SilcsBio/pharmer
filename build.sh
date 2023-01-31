@@ -2,7 +2,7 @@
 
 #docker build -t pharmer .
 
-cmd="cd /pharmer/Release && make clean && make all"
+cmd="cd /pharmer/Release && make clean && make -j 8 all"
 # cmd="ls -trhal /pharmer/"
 # cmd="ls -trhal /pharmer/Release; du -sh /pharmer"
 

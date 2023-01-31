@@ -1071,7 +1071,8 @@ public:
   void operator=(bool Value) {
     if (Value == false) return;
     print();
-    exit(1);
+    // cout << "TEST: [CommandLine.cpp/HelpPrinter/operator] Value==> " <<  Value << endl;
+    exit(0);
   }
 
   void print()
