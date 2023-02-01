@@ -23,7 +23,7 @@ OBJS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-tinyxml/%.o: ../tinyxml/%.cpp
+tinyxml/%.o: ../lib/tinyxml/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -I/usr/local/include/openbabel-2.0 -I/usr/local/include -I/usr0/local/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
