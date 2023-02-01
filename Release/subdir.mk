@@ -60,11 +60,16 @@ OBJS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-%.o: ../%.cpp
+%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -DEIGEN_STACK_ALLOCATION_LIMIT=0 -I/usr/local/include/openbabel-2.0 -I/usr/local/include -I/usr0/local/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	g++ -DEIGEN_STACK_ALLOCATION_LIMIT=0 \
+		-I/usr/local/include/openbabel-2.0 \
+		-I/usr/local/include \
+		-I/usr0/local/include \
+		-I../include \
+		-I../lib \
+		-O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-
 
