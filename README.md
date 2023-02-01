@@ -1,6 +1,6 @@
 
 #### 1. Build `pharmer` program:
-User needs to be in the `docker` group, or use `sudo` to run the script
+User needs to be in the [`docker`](https://docs.docker.com/engine/install/) group, or use `sudo` to run the script
 
 ```
 ./build.sh
